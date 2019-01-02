@@ -1,4 +1,4 @@
-###Lock-Line-Analysis
+#Lock-Line-Analysis
 *A suite of tools used to create a "lock-line" and "point of no return" based on historical NHL team results*
 
 ##Overview
