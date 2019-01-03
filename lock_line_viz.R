@@ -1,23 +1,30 @@
-fun.lockline_viz <- function(df.lock_line, df.game_summaries, team_name, season_ID){
+fun.lockline_viz <- function(df.lock_line, df.game_summaries, df.team_list){
 #DESCRIPTION: Creates a vizualization of specified lock line, point of no return, and team performance
 #ARUMENTS: 
   #df.lock_line = a data frame containing a lock line and point of no return for all 82 games
   #df.game_summaries = a data frame containing a team's summarised results by game
-  #team_name = a list of team names to grab
-  #season_ID = the season to search
+  #team_list = a dataframe with a team list in the first column and a season ID in the second
 
   require(ggplot2)
+  require(ggrepel)
   require(plyr)
   require(dplyr)
   require(readr)
   
-  #Filter Regular Season Games for the selected team and season only
-  df.team_summaries <- 
-    filter(df.game_summaries, 
-           session == "R" & 
-             team %in% team_name & 
-             season %in% season_ID) %>% 
-    arrange(team_game)
+  #create a blank dataframe for the resulting summaries for each team
+  df.team_summaries <- data.frame(team = as.character(), season = as.integer())
+  
+  #Filter Regular Season Games for the selected team/season combinations only
+  for(i in 1:nrow(df.team_list))
+  {
+    df.team_summaries <- 
+      rbind(df.team_summaries,
+            filter(df.game_summaries, 
+                   session == "R" & 
+                     team == as.character(df.team_list[i,1]) & 
+                     season == as.character(df.team_list[i,2])) %>% 
+              arrange(team_game))
+  }
   
   #Filter the lock line to only the number of games completed
   df.lock_line <- filter(df.lock_line, team_game <= max(df.team_summaries$team_game))
@@ -25,10 +32,10 @@ fun.lockline_viz <- function(df.lock_line, df.game_summaries, team_name, season_
   #Define the team labels for the viz
   df.line_labels <- 
     df.team_summaries %>% 
-    dplyr::group_by(team) %>%
+    dplyr::group_by(team, season) %>%
     dplyr::summarise(points = max(team_point_total),
               games = max(team_game)) %>%
-    dplyr::mutate(label = paste(team, points, sep = ", "))
+    dplyr::mutate(label = paste0(team, "-", season, "\n", points, " Points"))
   
   #Create Viz
   viz.lockline_performance <- 
