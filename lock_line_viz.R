@@ -3,7 +3,7 @@ fun.lockline_viz <- function(df.lock_line, df.game_summaries, df.team_list){
 #ARUMENTS: 
   #df.lock_line = a data frame containing a lock line and point of no return for all 82 games
   #df.game_summaries = a data frame containing a team's summarised results by game
-  #team_list = a dataframe with a team list in the first column and a season ID in the second
+  #df.team_list = a dataframe with a team list in the first column and a season ID in the second
 
   require(ggplot2)
   require(ggrepel)
