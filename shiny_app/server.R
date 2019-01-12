@@ -54,7 +54,34 @@ server <- function(input, output) {
   })
   
   output$df.results_table <- renderTable({
-
+    df.joined_tables <- reactive({
+      merge(x = df.team_results(), 
+            y = df.lock_line,
+            by = "team_game",
+            all.x = TRUE)
+    })
+    
+    df.joined_tables() %>%
+      mutate(
+           "Game" = team_game, 
+           "Opponent" = opp,
+           "Side" = side, 
+           "Result" = result, 
+           "Point Total" = team_point_total,
+           "Lock Line" = lock_line,
+           "Var to LL" = team_point_total - lock_line,
+           "No Return" = no_return,
+           "Var to NR" = team_point_total - no_return
+           ) %>%
+      select(Game,
+             Opponent,
+             Side,
+             Result,
+             "Point Total",
+             "Lock Line",
+             "Var to LL",
+             "No Return",
+             "Var to NR")
   })
   
 }

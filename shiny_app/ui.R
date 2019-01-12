@@ -13,6 +13,7 @@ ui <- fluidPage(
     uiOutput("seasonOutput")),
     mainPanel(plotOutput("viz.lock_line"),
               br(), br(),
+              h2("Season Trends"),
               tableOutput("df.results_table"))
   )
 )
