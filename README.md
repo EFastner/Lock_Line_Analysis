@@ -12,3 +12,4 @@ This project is largely inspired by two [articles](https://theathletic.com/22274
 2. **lock_line_creation.R-** A raw set of functions for creating the lock line and point of no return. May need to be modified to run on your local system
 3. **lock_line_viz.R-** A quick function for graphing the lock line and point of no return
 4. **Final Data Sets-** The final data sets for the game-by-game results summaries, the lock line and point of no return lines, as well as a list of playoff teams by season
+5. **shiny_app-** The code for a basic Shiny app exploring a team's performance throughout the season and how it compares to the lock line and point of no return
