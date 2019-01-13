@@ -10,7 +10,7 @@ server <- function(input, output) {
              season == input$seasonInput,
              session == "R")
   })
-    
+  
   #Dynamic UI to Select all Teams in Dataset
   output$teamOutput <- renderUI({
     selectInput(inputId = "teamInput",
@@ -63,20 +63,22 @@ server <- function(input, output) {
     
     df.joined_tables() %>%
       mutate(
-           "Game" = team_game, 
-           "Opponent" = opp,
-           "Side" = side, 
-           "Result" = result, 
-           "Point Total" = team_point_total,
-           "Lock Line" = lock_line,
-           "Var to LL" = team_point_total - lock_line,
-           "No Return" = no_return,
-           "Var to NR" = team_point_total - no_return
-           ) %>%
-      select(Game,
-             Opponent,
-             Side,
-             Result,
+        "Game" = team_game,
+        "Game Date" = game_date,
+        "Opponent" = opp,
+        "Side" = side, 
+        "Result" = result, 
+        "Point Total" = team_point_total,
+        "Lock Line" = lock_line,
+        "Var to LL" = team_point_total - lock_line,
+        "No Return" = no_return,
+        "Var to NR" = team_point_total - no_return
+      ) %>%
+      select("Game",
+             "Game Date",
+             "Opponent",
+             "Side",
+             "Result",
              "Point Total",
              "Lock Line",
              "Var to LL",
@@ -84,4 +86,9 @@ server <- function(input, output) {
              "Var to NR")
   })
   
+  output$export_summary <- 
+    downloadHandler(
+      filename = "lock_line_results.csv",
+      content = NULL
+    )
 }
