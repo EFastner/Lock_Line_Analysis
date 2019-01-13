@@ -1,6 +1,9 @@
 # Lock-Line-Analysis
 *A suite of tools used to create a "lock-line" and "point of no return" based on historical NHL team results*
 
+## Shiny App
+Corresponding Shiny App is now live at [this location](https://efastner.shinyapps.io/lock_line_analysis/)
+
 ## Overview
 This project is largely inspired by two [articles](https://theathletic.com/222746/2018/01/26/dellow-point-of-no-return-all-star-edition/) posted by [Tyler Dellow](https://theathletic.com/187165/2017/12/22/dellow-the-point-of-no-return-viva-las-vegas-edition/) at The Athletic during the 2017-2018 NHL hockey season. It involved analyzing game-by-game results for all teams from the 05-06 season onwards to identify the minimum number of points that any playoff team had achieved during that time frame, as well as the maximum number of points that any non-playoff team had achieved during the same time frame. The result was 2 lines, the lock line and the point of no return:
 
