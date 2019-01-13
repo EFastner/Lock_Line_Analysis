@@ -11,6 +11,37 @@ server <- function(input, output) {
              session == "R")
   })
   
+  #Join the team results table with the lock line table and create a summary
+  df.lock_line_summary <- reactive({
+    merge(x = df.team_results(), 
+          y = df.lock_line,
+          by = "team_game",
+          all.x = TRUE) %>%
+      mutate(
+        "Game" = team_game,
+        "Game Date" = game_date,
+        "Opponent" = opp,
+        "Side" = side, 
+        "Result" = result, 
+        "Point Total" = team_point_total,
+        "Lock Line" = lock_line,
+        "Var to LL" = team_point_total - lock_line,
+        "No Return" = no_return,
+        "Var to NR" = team_point_total - no_return
+      ) %>%
+      select("Game",
+             "Game Date",
+             "Opponent",
+             "Side",
+             "Result",
+             "Point Total",
+             "Lock Line",
+             "Var to LL",
+             "No Return",
+             "Var to NR")
+    
+  })
+  
   #Dynamic UI to Select all Teams in Dataset
   output$teamOutput <- renderUI({
     selectInput(inputId = "teamInput",
@@ -54,41 +85,13 @@ server <- function(input, output) {
   })
   
   output$df.results_table <- renderTable({
-    df.joined_tables <- reactive({
-      merge(x = df.team_results(), 
-            y = df.lock_line,
-            by = "team_game",
-            all.x = TRUE)
-    })
-    
-    df.joined_tables() %>%
-      mutate(
-        "Game" = team_game,
-        "Game Date" = game_date,
-        "Opponent" = opp,
-        "Side" = side, 
-        "Result" = result, 
-        "Point Total" = team_point_total,
-        "Lock Line" = lock_line,
-        "Var to LL" = team_point_total - lock_line,
-        "No Return" = no_return,
-        "Var to NR" = team_point_total - no_return
-      ) %>%
-      select("Game",
-             "Game Date",
-             "Opponent",
-             "Side",
-             "Result",
-             "Point Total",
-             "Lock Line",
-             "Var to LL",
-             "No Return",
-             "Var to NR")
+    df.lock_line_summary()
   })
   
   output$export_summary <- 
     downloadHandler(
-      filename = "lock_line_results.csv",
-      content = NULL
+      filename = function(){paste("lock_line_results.csv", sep = "")},
+      content = function(fname){write_csv(df.lock_line_summary(), fname)},
+      contentType = "text/csv"
     )
 }
