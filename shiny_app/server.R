@@ -19,7 +19,7 @@ server <- function(input, output) {
           all.x = TRUE) %>%
       mutate(
         "Game" = team_game,
-        "Game Date" = game_date,
+        "Game Date" = format(game_date, "%Y-%m-%d"),
         "Opponent" = opp,
         "Side" = side, 
         "Result" = result, 
