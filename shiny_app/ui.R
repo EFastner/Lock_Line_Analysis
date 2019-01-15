@@ -5,7 +5,7 @@ ui <- fluidPage(
     sidebarPanel(
     uiOutput("teamOutput"),
     uiOutput("seasonOutput")),
-    mainPanel(plotOutput("viz.lock_line"),
+    mainPanel(plotOutput("viz.lock_line", height = "100%"),
               br(), br(),
               h2(textOutput("titleOutput")),
               h3(textOutput("playoffsOutput")),
