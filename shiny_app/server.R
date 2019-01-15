@@ -8,6 +8,15 @@ server <- function(input, output) {
              session == "R")
   })
   
+  #Create the labels for the plot
+  df.line_labels <- reactive({
+    df.team_results() %>% 
+      dplyr::group_by(team, season) %>%
+      dplyr::summarise(points = max(team_point_total),
+                       games = max(team_game)) %>%
+      dplyr::mutate(label = paste0(team, "-", season, "\n", points, " Points"))
+  })
+  
   #Join the team results table with the lock line table and create a summary
   df.lock_line_summary <- reactive({
     merge(x = df.team_results(), 
@@ -59,15 +68,7 @@ server <- function(input, output) {
   
   #Create the plot
   output$viz.lock_line <- renderPlot({
-    #Create the labels for the plot
-    df.line_labels <- reactive({
-      df.team_results() %>% 
-        dplyr::group_by(team, season) %>%
-        dplyr::summarise(points = max(team_point_total),
-                         games = max(team_game)) %>%
-        dplyr::mutate(label = paste0(team, "-", season, "\n", points, " Points"))
-    })
-    
+
     #Create Viz
     viz.lockline_performance <- 
       ggplot() +
@@ -114,13 +115,16 @@ server <- function(input, output) {
   
   #Indicate whether a team made the playoffs or not in that season
   output$playoffsOutput <- reactive({
+    yn_playoffs <-   
       if(nrow(filter(df.playoff_teams, 
-                        team == input$teamInput & 
-                        season == input$seasonInput)) == 0){
-        return("Missed Playoffs")
+                     team == input$teamInput & 
+                     season == input$seasonInput)) == 0){
+        paste("Missed Playoffs")
       } else {
-        return("Made Playoffs")
+        paste("Made Playoffs")
       }
+    
+    return(paste(df.line_labels()$points, " Points - ", yn_playoffs))
     
   })
 }
