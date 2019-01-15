@@ -22,8 +22,8 @@ ui <- fluidPage(
     at the below location", br(), br(),
     a("Methodology Overview", href = "http://htmlpreview.github.com/?https://github.com/EFastner/Lock_Line_Analysis/blob/master/Lock_Line_Analysis.html"),
     br(),
-    a("PDF Download", href = "https://github.com/EFastner/Lock_Line_Analysis/raw/master/Lock_Line_Analysis.pdf")
-    ),
+    a("PDF Download", href = "https://github.com/EFastner/Lock_Line_Analysis/raw/master/Lock_Line_Analysis.pdf"),
+    width = 4),
     
     mainPanel(plotOutput("viz.lock_line", height = "100%"),
               br(), br(),
