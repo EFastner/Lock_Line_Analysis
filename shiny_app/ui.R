@@ -1,9 +1,3 @@
-library(readr)
-library(plyr)
-library(dplyr)
-library(ggplot2)
-library(ggrepel)
-
 ui <- fluidPage(
   titlePanel("Team Performance vs Lock Line", 
              windowTitle = "Lock Line Analysis"),
