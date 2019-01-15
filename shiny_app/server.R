@@ -92,7 +92,8 @@ server <- function(input, output) {
   #Output Results
   output$df.results_table <- DT::renderDataTable({
     DT::datatable(df.lock_line_summary(),
-    options = list(pageLength = 100))
+    options = list(pageLength = 100),
+    rownames = FALSE)
   })
   
   #Create the download handler for exporting a summary
