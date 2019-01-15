@@ -91,8 +91,8 @@ server <- function(input, output) {
   
   #Output Results
   output$df.results_table <- DT::renderDataTable({
-    DT::datatable(df.lock_line_summary(),
-    options = list(pageLength = 100),
+    DT::datatable(df.lock_line_summary(), extensions = "FixedHeader", 
+    options = list(pageLength = 100, fixedHeader = TRUE),
     rownames = FALSE)
   })
   
