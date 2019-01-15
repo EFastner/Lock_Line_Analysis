@@ -9,6 +9,7 @@ ui <- fluidPage(
               br(), br(),
               h2("Season Trends"), 
               downloadButton("export_summary", "Export to .csv"),
-              tableOutput("df.results_table"))
+              br(), br(),
+              DT::dataTableOutput("df.results_table"))
   )
 )

@@ -57,7 +57,9 @@ server <- function(input, output) {
                 selected = "20172018")
   })
   
+  #Create the plot
   output$viz.lock_line <- renderPlot({
+    
     #Create the labels for the plot
     df.line_labels <- reactive({
       df.team_results() %>% 
@@ -81,10 +83,13 @@ server <- function(input, output) {
     viz.lockline_performance
   })
   
-  output$df.results_table <- renderTable({
-    df.lock_line_summary()
+  #Output Results
+  output$df.results_table <- DT::renderDataTable({
+    DT::datatable(df.lock_line_summary(),
+    options = list(pageLength = 100))
   })
   
+  #Create the download handler for exporting a summary
   output$export_summary <- 
     downloadHandler(
       filename = function(){paste("lock_line_results.csv", sep = "")},
