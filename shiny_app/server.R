@@ -96,4 +96,26 @@ server <- function(input, output) {
       content = function(fname){write_csv(df.lock_line_summary(), fname)},
       contentType = "text/csv"
     )
+  
+  #Create summarized title for table using team and season
+  output$titleOutput <- reactive({
+    paste("Season Summary: ", 
+          input$teamInput,
+          " ",
+          substr(input$seasonInput, 1, 4),
+          "-",
+          substr(input$seasonInput, 5, 8))
+  })
+  
+  #Indicate whether a team made the playoffs or not in that season
+  output$playoffsOutput <- reactive({
+      if(nrow(filter(df.playoff_teams, 
+                        team == input$teamInput & 
+                        season == input$seasonInput)) == 0){
+        return("Missed Playoffs")
+      } else {
+        return("Made Playoffs")
+      }
+    
+  })
 }

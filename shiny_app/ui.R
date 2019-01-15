@@ -7,7 +7,9 @@ ui <- fluidPage(
     uiOutput("seasonOutput")),
     mainPanel(plotOutput("viz.lock_line"),
               br(), br(),
-              h2("Season Trends"), 
+              h2(textOutput("titleOutput")),
+              h3(textOutput("playoffsOutput")),
+              br(),
               downloadButton("export_summary", "Export to .csv"),
               br(), br(),
               DT::dataTableOutput("df.results_table"))
