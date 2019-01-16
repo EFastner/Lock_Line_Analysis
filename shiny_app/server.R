@@ -2,6 +2,10 @@ server <- function(input, output) {
 
   #Filter dataframe based on criteria
   df.team_results <- reactive({
+    if(is.null(df.all_summaries)){
+      return(NULL)
+    }
+    
     df.all_summaries %>%
       filter(team == input$teamInput,
              season == input$seasonInput,
@@ -10,6 +14,10 @@ server <- function(input, output) {
   
   #Create the labels for the plot
   df.line_labels <- reactive({
+    if(is.null(df.team_results())){
+      return(NULL)
+    }
+    
     df.team_results() %>% 
       dplyr::group_by(team, season) %>%
       dplyr::summarise(points = max(team_point_total),
@@ -19,6 +27,10 @@ server <- function(input, output) {
   
   #Join the team results table with the lock line table and create a summary
   df.lock_line_summary <- reactive({
+    if(is.null(df.team_results()) | is.null(df.lock_line)) {
+      return(NULL)
+    }
+    
     merge(x = df.team_results(), 
           y = df.lock_line,
           by = "team_game",
@@ -50,6 +62,9 @@ server <- function(input, output) {
   
   #Dynamic UI to Select all Teams in Dataset
   output$teamOutput <- renderUI({
+    if(is.null(df.all_summaries)){
+      return(NULL)
+    }
     selectInput(inputId = "teamInput",
                 label = "Team",
                 choices = sort(unique(df.all_summaries$team)),
@@ -58,6 +73,9 @@ server <- function(input, output) {
   
   #Dynamic UI to Select all seasons available for a team
   output$seasonOutput <- renderUI({
+    if(is.null(input$teamInput)){
+      return(NULL)
+    }
     selectInput(inputId = "seasonInput",
                 label = "Season",
                 choices = sort(unique(
@@ -68,7 +86,12 @@ server <- function(input, output) {
   
   #Create the plot
   output$viz.lock_line <- renderPlot({
-
+    if(is.null(df.lock_line) | 
+       is.null(df.team_results()) | 
+       is.null(df.line_labels())){
+      return(NULL)
+    }
+  
     #Create Viz
     viz.lockline_performance <- 
       ggplot() +
@@ -91,6 +114,9 @@ server <- function(input, output) {
   
   #Output Results
   output$df.results_table <- DT::renderDataTable({
+    if(is.null(df.lock_line_summary())){
+      return(NULL)
+    }
     DT::datatable(df.lock_line_summary(), extensions = "FixedHeader", 
     options = list(pageLength = 100, fixedHeader = TRUE),
     rownames = FALSE)
@@ -106,6 +132,11 @@ server <- function(input, output) {
   
   #Create summarized title for table using team and season
   output$titleOutput <- reactive({
+    if(is.null(input$teamInput) |
+       is.null(input$seasonInput)){
+      return(NULL)
+    }
+    
     paste("Season Summary: ", 
           input$teamInput,
           " ",
@@ -116,6 +147,9 @@ server <- function(input, output) {
   
   #Indicate whether a team made the playoffs or not in that season
   output$playoffsOutput <- reactive({
+    if(is.null(df.playoff_teams) | is.null(df.line_labels())){
+      return(NULL)
+    }
     yn_playoffs <-   
       if(nrow(filter(df.playoff_teams, 
                      team == input$teamInput & 
