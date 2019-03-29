@@ -3,8 +3,8 @@ title: "Lock Line Analysis"
 author: "Eric Fastner"
 date: "November 4, 2018"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 During the 2017-2018 season, I came across a set of [articles](https://theathletic.com/222746/2018/01/26/dellow-point-of-no-return-all-star-edition/) by [Tyler Dellow](https://theathletic.com/187165/2017/12/22/dellow-the-point-of-no-return-viva-las-vegas-edition/) that really piqued my interest. It involved analyzing game-by-game results for all teams from the 05-06 season onwards to identify the minimum number of points that any playoff team had achieved during that time frame, as well as the maximum number of points that any non-playoff team had achieved during the same time frame. The result was 2 lines, the lock line and the point of no return. 
@@ -561,6 +561,8 @@ viz.team_results <-
   viz.lockline_ponr +
   geom_line(data = team_results, mapping = aes(x = team_game, y = team_point_total, color = team)) +
   geom_text(data = line_labels, mapping = aes(x = games, y = points, label = label, color = team), nudge_x = 1.75, nudge_y = 1)
+
+viz.team_results
 ```
 
 To be honest the Ducks run to right the ship after starting 0-4 is pretty much what you would expect. While no one wants to start out by dropping 8 possible points, with a few strong win streaks it's possible to get back in the hunt. That appears to be what happened in this case. Let's take a looke at games 5 through 25 of the season
