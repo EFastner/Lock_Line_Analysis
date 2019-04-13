@@ -3,8 +3,8 @@ require(plyr)
 require(dplyr)
 
 #Read in previously generated summary files and list of playoff teams
-summary_files <- read_csv("~/Data_Sets/Hockey/Enhanced PbP/Summarized_Seasons/all_seasons.csv", col_names = TRUE)
-postseason_teams <- read_csv("~/Data_Sets/Hockey/Enhanced PbP/Summarized_Seasons/playoff_teams.csv", col_names = TRUE)
+summary_files <- read_csv("~/R/Scripts/Lock_Line_Analysis/Final Data Sets/all_seasons.csv", col_names = TRUE)
+postseason_teams <- read_csv("~/R/Scripts/Lock_Line_Analysis/Final Data Sets/playoff_teams.csv", col_names = TRUE)
 
 #Grab only regular season
 reg_season <- filter(summary_files, session == "R")
@@ -68,4 +68,4 @@ results <-
   select(team_game, lock_line, no_return)
 
 #Write Final Results
-write_csv(results, "~/Data_Sets/Hockey/Enhanced PbP/Summarized_Seasons/lock_line.csv")
+write_csv(results, "~/R/Scripts/Lock_Line_Analysis/Final Data Sets/lock_line.csv")
